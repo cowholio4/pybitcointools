@@ -723,7 +723,7 @@ def mk_opreturn(msg, msg_is_hex=False, txhex=None):
         assert (len(outs) > 0) and sum(multiaccess(outs, 'value')) > 0 \
                 and not any([o for o in outs if o.get("script")[:2] == '6a']), \
             "Tx limited to *1* OP_RETURN, and only whilst the other outputs send funds"
-        outs.append({
+        txo['outs'].insert(0, {
                     'script': hexdata, 
                     'value': 0
                     })
