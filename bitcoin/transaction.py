@@ -701,9 +701,13 @@ def der_extract(tx):
 get_tx_sigs = extract_ders = der_extract
 
 
-def mk_opreturn(msg, txhex=None):
-    """Makes OP_RETURN script from msg, embeds in Tx hex"""    
-    hexdata = safe_hexlify(b'\x6a' + wrap_script(msg))
+def mk_opreturn(msg, msg_is_hex=False, txhex=None):
+    """Makes OP_RETURN script from msg, embeds in Tx hex"""
+    if msg_is_hex:
+        binary_string = binascii.unhexlify(msg)
+        hexdata = safe_hexlify(b'\x6a' + num_to_op_push(len(binary_string))) + msg
+    else:
+        hexdata = safe_hexlify(b'\x6a' + wrap_script(msg))
     if txhex is None:
         return hexdata
     else:
